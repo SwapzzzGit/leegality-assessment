@@ -13,7 +13,7 @@ const initialState = {
   },
   pagination: {
     page: 1,
-    limit: 12,
+    limit: 8,
     total: 0,
   },
 }

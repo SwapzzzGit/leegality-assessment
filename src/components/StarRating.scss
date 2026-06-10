@@ -1,0 +1,18 @@
+.star-rating {
+  display: inline-flex;
+  align-items: center;
+}
+
+.star {
+  color: #ffc107; /* gold */
+  margin-right: 4px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.rating-count {
+  margin-left: 8px;
+  color: #6b7280;
+  font-size: 0.9rem;
+}

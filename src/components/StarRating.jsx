@@ -1,6 +1,5 @@
 import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa'
 import './StarRating.scss'
-
 export default function StarRating({ rating }) {
   const stars = [1, 2, 3, 4, 5].map((i) => {
     if (i <= Math.floor(rating)) return 'full'
