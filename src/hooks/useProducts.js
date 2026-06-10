@@ -1,25 +1,66 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { setProducts, setStatus } from '../store/productsSlice';
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  setProducts,
+  setLoading,
+  setError,
+  setCategories,
+  setTotal,
+} from '../store/productsSlice'
 
-export default function useProducts() {
-  const dispatch = useDispatch();
-  const products = useSelector((state) => state.products.items);
-  const status = useSelector((state) => state.products.status);
+const BASE_URL = 'https://dummyjson.com'
+
+export function useProducts() {
+  const dispatch = useDispatch()
+  const { filters, pagination } = useSelector((state) => state.products)
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await fetch(`${BASE_URL}/products/categories`)
+        const data = await res.json()
+        dispatch(setCategories(data))
+      } catch (err) {
+        console.error('Failed to fetch categories:', err)
+      }
+    }
+    fetchCategories()
+  }, [])
 
   useEffect(() => {
     async function fetchProducts() {
-      dispatch(setStatus('loading'));
-      // Placeholder data — replace with real API call
-      const data = [
-        { id: 1, title: 'Sample Product 1', price: 19.99, rating: 4 },
-        { id: 2, title: 'Sample Product 2', price: 29.99, rating: 5 },
-      ];
-      dispatch(setProducts(data));
-      dispatch(setStatus('succeeded'));
+      dispatch(setLoading(true))
+      dispatch(setError(null))
+      try {
+        const { page, limit } = pagination
+        const skip = (page - 1) * limit
+        let url
+        if (filters.category) {
+          url = `${BASE_URL}/products/category/${filters.category}?limit=${limit}&skip=${skip}`
+        } else {
+          url = `${BASE_URL}/products?limit=${limit}&skip=${skip}`
+        }
+        const res = await fetch(url)
+        if (!res.ok) throw new Error('Failed to fetch products')
+        const data = await res.json()
+        let filtered = data.products
+        if (filters.minPrice !== '') {
+          filtered = filtered.filter((p) => p.price >= Number(filters.minPrice))
+        }
+        if (filters.maxPrice !== '') {
+          filtered = filtered.filter((p) => p.price <= Number(filters.maxPrice))
+        }
+        if (filters.brands.length > 0) {
+          filtered = filtered.filter((p) => filters.brands.includes(p.brand))
+        }
+        dispatch(setProducts(filtered))
+        dispatch(setTotal(data.total))
+      } catch (err) {
+        dispatch(setError(err.message))
+      } finally {
+        dispatch(setLoading(false))
+      }
     }
-    if (status === 'idle') fetchProducts();
-  }, [dispatch, status]);
-
-  return { products, status };
+    fetchProducts()
+  }, [filters, pagination.page, pagination.limit])
 }
