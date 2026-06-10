@@ -8,12 +8,11 @@ export default function Navbar() {
   const [term, setTerm] = useState('')
   const dispatch = useDispatch()
 
-  function submitSearch() {
-    dispatch(setSearchQuery(term))
-  }
-
-  function onKeyDown(e) {
-    if (e.key === 'Enter') submitSearch()
+  function onChange(e) {
+    const v = e.target.value
+    setTerm(v)
+    // dispatch on every change so listing filters live as typing
+    dispatch(setSearchQuery(v))
   }
 
   return (
@@ -25,15 +24,14 @@ export default function Navbar() {
         </button>
 
         <div className="nav-search">
-          <button className="search-icon" onClick={submitSearch} aria-label="Search">
+          <button className="search-icon" aria-hidden>
             <FiSearch size={16} />
           </button>
           <input
             type="text"
             placeholder="Search products..."
             value={term}
-            onChange={(e) => setTerm(e.target.value)}
-            onKeyDown={onKeyDown}
+            onChange={onChange}
           />
         </div>
 

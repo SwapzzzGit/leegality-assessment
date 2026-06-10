@@ -32,13 +32,6 @@ export function useProducts() {
     async function fetchProducts() {
       dispatch(setLoading(true))
       dispatch(setError(null))
-      // If query is present but empty, clear results (user cleared search)
-      if (typeof filters.query !== 'undefined' && filters.query.trim() === '') {
-        dispatch(setProducts([]))
-        dispatch(setTotal(0))
-        dispatch(setLoading(false))
-        return
-      }
       try {
         const { page, limit } = pagination
         const skip = (page - 1) * limit
