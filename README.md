@@ -1,87 +1,34 @@
 # Leegality Frontend Assessment
 
-This repository is a frontend assessment built with React and Vite. The app demonstrates a product listing and product detail views (including an image carousel, reviews, and basic state handling).
+This is a frontend assessment built with React. The app showcases a product listing and product detail page. The objective of this assement was to Build a simple e-commerce Product Listing Application using the public API.
 
-## Setup
+## Layout desgning , planing and understanding :
 
-- Install dependencies:
+![Layout screenshot](photo_2026-06-10_22-20-06.jpg)
 
-```bash
-npm install
-```
 
-- Run development server:
+## Setup Instructions :
 
-```bash
-npm run dev
-```
+- Project Setup & Install dependencies:
 
-- Build for production:
-
-```bash
-npm run build
-```
-
-The project uses Vite for development and bundling (see `package.json`).
-
-## Assumptions
-
-- Product data is fetched from `https://dummyjson.com` (used in `src/pages/ProductDetail.jsx`).
-- This assessment targets modern browsers with ES module support.
-- Basic global state tooling (`@reduxjs/toolkit`) is included but local state is used where appropriate for simplicity.
+1. First command to initiate React project - npm create vite@latest.
+Removed and clean unnecessary files.
+2. Installed react-router-dom, @reduxjs/toolkit, react-redux, sass packages.
 
 ## Architectural decisions
 
-- React + Vite: chosen for a fast developer experience and modern bundling.
-- Routing: `react-router-dom` is used for navigation and route-based pages.
-- State: `@reduxjs/toolkit` is available for global state; components use local state for fetch lifecycle and UI details like image index.
-- Styling: SCSS files (in `src/components` and `src/pages`) for component-scoped styles.
-- Components: small, focused components (e.g., `StarRating`, `ProductCard`, `FilterSidebar`) to keep the UI composable and testable.
+1. Used React : because it is fast to setup and provides smooth experience and varierty of feature provided by React.
+2. For State management : Used Redux Toolkit for product data, filters, pagination, and search so the state remains centralized and it is easier to manage across components.
+3. Components : Broke the UI into reusable components such as ProductCard, StarRating, FilterSidebar, and Pagination to avoid code duplication and improve maintainability.
+4. Styling: Used SCSS because I am more comfortable organizing styles with nesting and keeping component styles easier to maintain.
+5. API Integration: Product data is fetched from the DummyJSON API and displayed dynamically instead of using hardcoded data.
+6. Responsive Layout: CSS Grid and Flexbox were used to create a layout that adapts to different screen sizes.
+7. Error & Loading States: Added loading and error handling to provide feedback during API requests and improve user experience.
 
-## What I implemented (high level)
-
-- Project scaffold with Vite, Redux and router.
-- Product listing and `ProductDetail` page (fetches product by id). The detail page includes loading/error states, image pagination/carousel, and reviews rendering.
-- Basic UI components and SCSS-based styling.
 
 ## Improvements if given more time
 
-- Add unit and integration tests (Jest + React Testing Library).
-- Add data caching / global fetching layer (RTK Query or React Query) to prevent redundant requests.
-- Enhance accessibility (ARIA labels, keyboard carousel controls, focus management).
-- Add image lazy-loading and responsive sources for performance.
-- Add CI pipeline with linting, tests, and build checks.
+1. Add image lazy-loading and responsive sources for performance.
+2. Add CI pipeline with linting, tests, and build checks.
 
-## Quick verification
-
-1. Start dev server:
-
-```bash
-npm run dev
-```
-
-2. Open the app in the browser and navigate the listing and product detail pages. The detail page is implemented in `src/pages/ProductDetail.jsx`.
-
-## Commit notes
-
-- Recent commits touching the product detail page:
-  - `70bce1d` — app routing setup done of 2 pages
-  - `fc36cfb` — project setup with vite + redux + router
-
----
-
-If you want, I can: run the app locally, add tests, or expand the README with screenshots and more setup details.
-README file containing:
-Setup instructions
-Assumptions made
-Architectural decisions
-Improvements if given more time
-
-## Architectural Decisions
-
-### Why Redux over local state?
-Filters are stored in Redux store instead of component useState.
-This means when I navigate to a product detail page and hits 
-Back the filters are exactly as I left them, because Redux 
-state survives navigation and Local useState would reset on unmount.
 
