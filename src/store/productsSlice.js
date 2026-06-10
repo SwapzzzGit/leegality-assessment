@@ -61,6 +61,7 @@ const productsSlice = createSlice({
 export const {
   setProducts, setLoading, setError, setCategories,
   setTotal, setCategory, setPriceRange, toggleBrand,
+  setSearchQuery, triggerReload,
   setPage, clearFilters,
 } = productsSlice.actions
 
