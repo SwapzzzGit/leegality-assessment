@@ -1,15 +1,26 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import StarRating from './StarRating';
+import { useNavigate } from 'react-router-dom'
+import StarRating from './StarRating'
+import './ProductCard.scss'
 
 export default function ProductCard({ product }) {
-  if (!product) return null;
+  const navigate = useNavigate()
+
+  function handleClick() {
+    navigate(`/product/${product.id}`)
+  }
+
   return (
-    <div className="product-card">
-      <h3>{product.title}</h3>
-      <p>${product.price}</p>
-      <StarRating rating={product.rating} />
-      <Link to={`/products/${product.id}`}>View</Link>
+    <div className="product-card" onClick={handleClick}>
+      <div className="card-image">
+        <img src={product.thumbnail} alt={product.title} loading="lazy" />
+      </div>
+      <div className="card-info">
+        <p className="card-title">{product.title}</p>
+        <div className="card-bottom">
+          <span className="card-price">${product.price}</span>
+          <StarRating rating={product.rating} />
+        </div>
+      </div>
     </div>
-  );
+  )
 }
