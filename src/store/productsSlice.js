@@ -7,10 +7,12 @@ const initialState = {
   categories: [],
   filters: {
     category: '',
+    query: '',
     minPrice: '',
     maxPrice: '',
     brands: [],
   },
+  reloadKey: 0,
   pagination: {
     page: 1,
     limit: 8,
@@ -31,6 +33,10 @@ const productsSlice = createSlice({
       state.filters.category = action.payload
       state.pagination.page = 1
     },
+    setSearchQuery(state, action) {
+      state.filters.query = action.payload
+      state.pagination.page = 1
+    },
     setPriceRange(state, action) {
       state.filters.minPrice = action.payload.min
       state.filters.maxPrice = action.payload.max
@@ -44,6 +50,7 @@ const productsSlice = createSlice({
       state.pagination.page = 1
     },
     setPage(state, action) { state.pagination.page = action.payload },
+    triggerReload(state) { state.reloadKey = (state.reloadKey || 0) + 1 },
     clearFilters(state) {
       state.filters = initialState.filters
       state.pagination.page = 1

@@ -13,6 +13,7 @@ const BASE_URL = 'https://dummyjson.com'
 export function useProducts() {
   const dispatch = useDispatch()
   const { filters, pagination } = useSelector((state) => state.products)
+  const { reloadKey } = useSelector((state) => state.products)
 
   useEffect(() => {
     async function fetchCategories() {
@@ -35,7 +36,10 @@ export function useProducts() {
         const { page, limit } = pagination
         const skip = (page - 1) * limit
         let url
-        if (filters.category) {
+        // If a search query is provided, use the search endpoint
+        if (filters.query && filters.query.trim() !== '') {
+          url = `${BASE_URL}/products/search?q=${encodeURIComponent(filters.query)}&limit=${limit}&skip=${skip}`
+        } else if (filters.category) {
           url = `${BASE_URL}/products/category/${filters.category}?limit=${limit}&skip=${skip}`
         } else {
           url = `${BASE_URL}/products?limit=${limit}&skip=${skip}`
@@ -62,5 +66,5 @@ export function useProducts() {
       }
     }
     fetchProducts()
-  }, [filters, pagination.page, pagination.limit])
+  }, [filters, pagination.page, pagination.limit, reloadKey])
 }
